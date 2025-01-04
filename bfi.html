@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Fat Index Calculator</title>
+   <link rel="stylesheet" href="">
+   <style>body {
+    font-family: 'Poppins', sans-serif;
+  background-color: rgb(60, 34, 34);   
+    background-image: linear-gradient(to right, #000000, #611717, #bc0606); 
+    background-size: cover; 
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+#topmain {
+    display: flex;
+    
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #291818;
+}
+
+#logo img {
+    height: 60px;
+    width: auto;
+}
+
+nav {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 110px;
+}
+
+nav a {
+    position: relative;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 15px;
+    font-size: 18px;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #ffffff;
+    left: 0;
+    bottom: 0;
+    transition: width 0.3s ease-in-out;
+}
+
+nav a:hover::after {
+    left: 30%;
+    width: 40%;
+}
+  
+
+    .container {
+        background-color: white;
+        padding: 30px;
+        font-family: Cambria, serif;
+        font-size: large;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        max-width: 400px;
+        width: 100%;
+        text-align: center;
+        margin-top: 80px; /* Adjust this value to create space below the fixed header */
+        margin-left: 30%;
+    }
+
+    h2 {
+        color: #800000;
+    }
+
+    input, select, button {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 1rem;
+    }
+
+    button {
+        background-color: #800000;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #8d4a4a;
+    }
+
+    #result {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+        transition: all 0.3s ease-in-out;
+    }
+</style>
+</head>
+<body>
+    <div id="topmain">
+        <div id="logo">
+            <img src="logofit.png" alt="Fit-Track Logo">
+        </div>
+        <nav>
+            <a href="home.php">Home</a>
+            <a href="plan.html">Planner</a>
+            <a href="calci.html">Calculators</a>
+            <a href="profile.php">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+    </div>
+<div class="container">
+    <h2>Body Fat Index Calculator</h2> <hr>
+
+    <form id="bfiForm">
+        <label for="weight">Weight ⚖(kg):</label>
+        <input type="number" id="weight" name="weight" required>
+
+        <label for="waist">Waist Circumference (cm):</label>
+        <input type="number" id="waist" name="waist" required>
+
+        <label for="age">Age 🗓:</label>
+        <input type="number" id="age" name="age" required>
+
+        <label for="gender">Gender 🚻:</label>
+        <select id="gender" name="gender" required>
+            <option value="male">Male 🧔🏻‍♂️</option>
+            <option value="female">Female 👩🏻</option>
+        </select>
+
+        <button type="button" onclick="calculateBFI()">Calculate BFI</button>
+    </form>
+
+    <div id="result"></div>
+    <div id="review"></div>
+</div>
+
+<script>
+// Function to calculate the Body Fat Index (BFI)
+function calculateBFI() {
+    // Get values from form inputs
+    const weight = parseFloat(document.getElementById('weight').value);
+    const waist = parseFloat(document.getElementById('waist').value);
+    const age = parseFloat(document.getElementById('age').value);
+    const gender = document.getElementById('gender').value;
+
+    // Check if values are valid
+    if (weight > 0 && waist > 0 && age > 0) {
+        let bfi;
+
+        // BFI calculation logic based on gender (using the US Navy method as an example)
+        if (gender === 'male') {
+            bfi = (495 / (1.0324 - 0.19077 * Math.log10(waist - age) + 0.15456 * Math.log10(weight))) - 450;
+        } else {
+            bfi = (495 / (1.29579 - 0.35004 * Math.log10(waist + age) + 0.22100 * Math.log10(weight))) - 450;
+        }
+
+        // Round the result
+        bfi = bfi.toFixed(2);
+
+        // Display the result with a smooth transition
+        document.getElementById('result').innerHTML = `Your Body Fat Index is: ${bfi}%`;
+
+        // Generate and display a short review
+        let review;
+        if (gender === 'male') {
+            if (bfi < 6) {
+                review = "You're very lean, perhaps an athlete.";
+            } else if (bfi <= 24) {
+                review = "You're in a healthy range.";
+            } else {
+                review = "Consider a fitness plan; you're above the healthy range.";
+            }
+        } else {
+            if (bfi < 14) {
+                review = "You're very lean, perhaps an athlete.";
+            } else if (bfi <= 31) {
+                review = "You're in a healthy range.";
+            } else {
+                review = "Consider a fitness plan; you're above the healthy range.";
+            }
+        }
+
+        document.getElementById('review').innerHTML = review;
+    } else {
+        document.getElementById('result').innerHTML = "Please enter valid values.";
+    }
+}
+</script>
+
+</body>
+</html>

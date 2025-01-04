@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Fat Index Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(60, 34, 34);   
+            background-image: linear-gradient(to right, #000000, #611717, #bc0606); 
+            background-size: cover; 
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        #topmain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #291818;
+        }
+
+        #logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            flex-grow: 1;
+            margin-left: 110px;
+        }
+
+        nav a {
+            position: relative;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 5px 15px;
+            font-size: 18px;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ffffff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease-in-out;
+        }
+
+        nav a:hover::after {
+            left: 30%;
+            width: 40%;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            font-family: Cambria, serif;
+            font-size: large;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            margin-top: 80px; 
+            margin-left: 30%;
+        }
+
+        h1 {
+            color: #800000;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #8d4a4a;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .height-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .height-inputs {
+            display: none;
+        }
+
+        .height-fields {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .height-fields input {
+            width: calc(50% - 5px);
+        }
+    </style>
+</head>
+<body>
+    <div id="topmain">
+        <div id="logo">
+            <img src="logofit.png" alt="Fit-Track Logo">
+        </div>
+        <nav>
+            <a href="home.php">Home</a>
+            <a href="plan.html">Planner</a>
+            <a href="calci.html">Calculators</a>
+            <a href="profile.php">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+    </div>
+    <div class="container">
+        <h1>BMI Calculator 📇</h1>
+        <form id="bmiForm">
+            <label for="weight">Weight ⚖ (kg):</label>
+            <input type="number" id="weight" name="weight" required>
+
+            <label>Height:</label>
+            <div class="height-container">
+                <div>
+                    <input type="radio" name="height-unit" id="height-ft" value="ft" onclick="toggleHeightInputs()" checked>
+                    <label for="height-ft">Feet/Inches</label>
+                </div>
+                <div>
+                    <input type="radio" name="height-unit" id="height-cm" value="cm" onclick="toggleHeightInputs()">
+                    <label for="height-cm">Centimeters</label>
+                </div>
+            </div>
+
+            <div id="height-inputs-ft" class="height-inputs height-fields">
+                <input type="number" id="height-feet" placeholder="Feet" required>
+                <input type="number" id="height-inches" placeholder="Inches" required>
+            </div>
+
+            <div id="height-inputs-cm" class="height-inputs">
+                <input type="number" id="height-cm-input" placeholder="Centimeters" required>
+            </div>
+            
+            <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function toggleHeightInputs() {
+            const ftInputs = document.getElementById('height-inputs-ft');
+            const cmInput = document.getElementById('height-inputs-cm');
+
+            if (document.getElementById('height-ft').checked) {
+                ftInputs.style.display = 'flex';
+                cmInput.style.display = 'none';
+            } else {
+                ftInputs.style.display = 'none';
+                cmInput.style.display = 'block';
+            }
+        }
+
+        function calculateBMI() {
+            const weight = document.getElementById('weight').value;
+            let height;
+
+            if (document.getElementById('height-ft').checked) {
+                const feet = document.getElementById('height-feet').value;
+                const inches = document.getElementById('height-inches').value;
+                height = (parseInt(feet) * 12 + parseInt(inches)) * 0.0254; // Convert to meters
+            } else {
+                height = document.getElementById('height-cm-input').value / 100; // Convert cm to meters
+            }
+
+            const bmi = (weight / (height * height)).toFixed(2);
+            let resultText = `Your BMI is ${bmi}. `;
+
+            if (bmi < 18.5) {
+                resultText += "You are underweight.";
+            } else if (bmi < 24.9) {
+                resultText += "You have a normal weight.";
+            } else if (bmi < 29.9) {
+                resultText += "You are overweight.";
+            } else {
+                resultText += "You are obese.";
+            }
+
+            document.getElementById('result').innerText = resultText;
+        }
+
+        // Initialize height inputs visibility
+        toggleHeightInputs();
+    </script>
+</body>
+</html>

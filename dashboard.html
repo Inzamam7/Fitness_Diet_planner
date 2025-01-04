@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+       
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(60, 34, 34);   
+            background-image: linear-gradient(to right, #000000, #611717, #bc0606); 
+            background-size: cover; 
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        #topmain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #291818;
+        }
+        #logo img {
+            height: 60px;
+            width: auto;
+        }
+        nav {
+            display: flex;
+            flex-grow: 1;
+            margin-left: 110px;
+        }
+        nav a {
+            position: relative;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 5px 15px;
+            font-size: 18px;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ffffff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease-in-out;
+        }
+        nav a:hover::after {
+            left: 30%;
+            width: 40%;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s; /* Scale on hover */
+            margin-top: 25px;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            text-align: center;
+            color: #800000;
+            animation: slideIn 0.5s; /* Slide in effect for the header */
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            transition: background-color 0.3s; /* Background color transition */
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        tr:hover {
+            background-color: #f0e5e5; /* Hover effect for rows */
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+
+        .progress {
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .progress-fill {
+            height: 20px;
+            background-color: #800000;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            transition: width 0.6s ease-in-out; /* Smooth fill animation */
+        }
+
+        .progress-fill:hover {
+            background-color: #b30000; /* Darker shade on hover */
+        }
+
+        .progress h4 {
+            margin: 0;
+            animation: fadeIn 0.8s; /* Fade in effect for progress text */
+        }
+    </style>
+</head>
+<body> <section>
+    <div id="topmain">
+        <!--logo image here -->
+        <div id="logo">
+            <img src="logofit.png" alt="Fit-Track Logo">
+        </div>
+        <!-- nav  -->
+        <nav>
+            <a href="home.php">Home</a>
+            <a href="plan.html">Planner</a>
+            <a href="calci.html">Calculators</a>
+            <a href="profile.php">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+            
+        </nav>
+    </div>
+</section>
+
+<div class="container"><hr>
+    <h1>Dashboard</h1><hr>
+    <div id="userPlan"></div><br><hr>
+
+    <!-- Workout Plan Table -->
+    <h3>Workout Plan:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Workout</th>
+            </tr>
+        </thead>
+        <tbody id="workoutPlanTableBody"></tbody>
+    </table><hr>
+
+    <!-- Diet Plan Table -->
+    <h3>Diet Plan:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Diet</th>
+            </tr>
+        </thead>
+        <tbody id="dietPlanTableBody"></tbody>
+    </table>
+
+    <!-- Progress Tracking -->
+    <div class="progress">
+        <h4>Workout Progress: <span id="workoutProgress">0%</span></h4>
+        <div class="progress-bar">
+            <div class="progress-fill workout"></div>
+        </div>
+        <h4>Diet Progress: <span id="dietProgress">0%</span></h4>
+        <div class="progress-bar">
+            <div class="progress-fill diet"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        const savedPlan = localStorage.getItem('fitnessPlan');
+
+        if (savedPlan) {
+            const planData = JSON.parse(savedPlan);
+
+            // Display user's saved plan details
+            document.getElementById('userPlan').innerHTML = `
+                <h3>Welcome, ${planData.name}!</h3>
+                <p>Here is your saved fitness plan:</p>
+                <ul>
+                    <li><strong>Age:</strong> ${planData.age}</li>
+                    <li><strong>Gender:</strong> ${planData.gender.charAt(0).toUpperCase() + planData.gender.slice(1)}</li>
+                    <li><strong>Diet Preference:</strong> ${planData.dietPreference.charAt(0).toUpperCase() + planData.dietPreference.slice(1)}</li>
+                    <li><strong>Plan Type:</strong> ${planData.planType.charAt(0).toUpperCase() + planData.planType.slice(1)}</li>
+                </ul>
+            `;
+
+            // Populate workout and diet plan tables based on plan type
+            if (planData.planType === 'weekly') {
+                populateTable(getWeeklyWorkoutPlan(), 'workoutPlanTableBody');
+                populateTable(getWeeklyDietPlan(), 'dietPlanTableBody');
+            } else if (planData.planType === 'monthly') {
+                populateTable(getMonthlyWorkoutPlan(), 'workoutPlanTableBody');
+                populateTable(getMonthlyDietPlan(), 'dietPlanTableBody');
+            }
+        } else {
+            document.getElementById('userPlan').innerHTML = `
+                <h3>No plan saved yet!</h3>
+                <p>Please save your plan first.</p>
+            `;
+        }
+    };
+
+    function populateTable(plan, tableId) {
+        const tableBody = document.getElementById(tableId);
+        tableBody.innerHTML = '';  // Clear table before populating
+
+        plan.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><input type="checkbox" class="${tableId === 'workoutPlanTableBody' ? 'workout-checkbox' : 'diet-checkbox'}" onclick="updateProgress()"></td>
+                <td>${item}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    function updateProgress() {
+        const workoutCheckboxes = document.querySelectorAll('.workout-checkbox');
+        const dietCheckboxes = document.querySelectorAll('.diet-checkbox');
+
+        const workoutProgress = calculateProgress(workoutCheckboxes);
+        const dietProgress = calculateProgress(dietCheckboxes);
+
+        document.getElementById('workoutProgress').innerText = `${workoutProgress}%`;
+        document.getElementById('dietProgress').innerText = `${dietProgress}%`;
+
+        document.querySelector('.progress-fill.workout').style.width = `${workoutProgress}%`;
+        document.querySelector('.progress-fill.diet').style.width = `${dietProgress}%`;
+    }
+
+    function calculateProgress(checkboxes) {
+        const total = checkboxes.length;
+        const completed = Array.from(checkboxes).filter(checkbox => checkbox.checked).length;
+        return total > 0 ? ((completed / total) * 100).toFixed(2) : 0;
+    }
+
+    // Sample workout and diet plans for weekly and monthly
+    function getWeeklyWorkoutPlan() {
+        return [
+            'Monday: 🏃‍♂️ Cardio and Core - 30 min jog, Plank, Crunches, Leg Raises',
+            'Tuesday: 💪 Strength Training (Upper Body) - Push-ups, Bench Press, Dumbbell Rows',
+            'Wednesday: 🧘‍♀️ Yoga and Flexibility - 1 hour of gentle yoga',
+            'Thursday: 🏋️‍♀️ Weight Training (Full Body) - Squats, Deadlifts, Chest Press',
+            'Friday: 🏊‍♂️ Swimming and Cardio - 45 minutes of laps',
+            'Saturday: 🚶‍♀️ Light Activity and Mobility - 30 min brisk walk',
+            'Sunday: Rest Day - Focus on hydration and relaxation'
+        ];
+    }
+
+    function getWeeklyDietPlan() {
+        return [
+            'Monday: Breakfast - Avocado Toast, Lunch - Cucumber Salad, Dinner - Vegetable Stir-Fry',
+            'Tuesday: Breakfast - Scrambled Eggs, Lunch - Turkey Wrap, Dinner - Lentil Soup',
+            'Wednesday: Breakfast - Greek Yogurt, Lunch - Quinoa Salad, Dinner - Baked Salmon',
+            'Thursday: Breakfast - Oatmeal, Lunch - Chicken Bowl, Dinner - Whole Wheat Pasta',
+            'Friday: Breakfast - Smoothie Bowl, Lunch - Spinach Stuffed Chicken, Dinner - Curry Lentils',
+            'Saturday: Breakfast - Whole Grain Toast, Lunch - Beef Stir-Fry, Dinner - Chicken Soup',
+            'Sunday: Breakfast - Veggie Omelette, Lunch - Mixed Bean Salad, Dinner - Sushi Rolls'
+        ];
+    }
+
+    function getMonthlyWorkoutPlan() {
+        return [
+            'Week 1: Cardio and Strength Training - Cardio, Strength exercises for upper and lower body, Rest day',
+            'Week 2: Yoga and Flexibility - Yoga, Stretching, Rest days',
+            'Week 3: Weight Training - Full body workouts, Core exercises, Rest days',
+            'Week 4: Endurance Training - Cycling, Swimming, Rest day'
+        ];
+    }
+
+    function getMonthlyDietPlan() {
+        return [
+            'Week 1: Breakfast - Egg Muffins, Lunch - Salad, Dinner - Sweet Potato Chili',
+            'Week 2: Breakfast - Overnight Oats, Lunch - Grilled Vegetable Wrap, Dinner - Grilled Steak',
+            'Week 3: Breakfast - Smoothie, Lunch - Quinoa Salad, Dinner - Thai Curry',
+            'Week 4: Breakfast - Avocado Smoothie, Lunch - Lentil Salad, Dinner - Baked Chicken'
+        ];
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: hsl(0, 0%, 96%);
+    padding: 20px;
+    background-color: rgb(60, 34, 34); 
+    background-image: linear-gradient(to right, #000000, #611717,#bc0606); 
+    background-size: cover; 
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+ 
+.container {
+    background-color: white;
+    padding: 30px;
+    font-family: Cambria;
+    font-size: large;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+h2 {
+    color: #800000;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+button {
+    background-color: #800000;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #8d4a4a;
+}
+
+#result, #review {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #c0c0c0;
+    transition: all 0.3s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+     body {
+            font-family: 'Poppins', sans-serif;
+            background-color: hsl(0, 0%, 96%);
+            padding: 20px;
+            background-color: rgb(60, 34, 34); 
+            background-image: linear-gradient(to right, #000000, #611717,#bc0606); 
+            background-size: cover; 
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            font-family: Cambria;
+            font-size: large;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h2 {
+            color: #800000;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #8d4a4a;
+        }
+
+        #result, #review {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s ease-in-out;
+        }

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calories Burned Calculator </title>
+    <link rel="stylesheet" href="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+          background-color: rgb(60, 34, 34);   
+            background-image: linear-gradient(to right, #000000, #611717, #bc0606); 
+            background-size: cover; 
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        #topmain {
+            display: flex;
+            
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #291818;
+        }
+
+        #logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            flex-grow: 1;
+            margin-left: 110px;
+        }
+
+        nav a {
+            position: relative;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 5px 15px;
+            font-size: 18px;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ffffff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease-in-out;
+        }
+
+        nav a:hover::after {
+            left: 30%;
+            width: 40%;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            font-family: Cambria, serif;
+            font-size: large;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            margin-top: 80px; /* Adjust this value to create space below the fixed header */
+            margin-left: 30%;
+        }
+
+        h2 {
+            color: #800000;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #8d4a4a;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+        h1{
+            color: #800000;
+            margin-top: 0px;
+        }
+    </style>
+</head>
+<body>
+    <div id="topmain">
+        <div id="logo">
+            <img src="logofit.png" alt="Fit-Track Logo">
+        </div>
+        <nav>
+            <a href="home.php">Home</a>
+            <a href="plan.html">Planner</a>
+            <a href="calci.html">Calculators</a>
+            <a href="profile.php">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+        
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1>Calories Burned Calculator by Heart Rate</h1><hr>
+
+        <label for="age">Age</label>
+        <input type="number" id="age" placeholder="Enter your age">
+
+        <label for="weight">Weight ⚖</label>
+        <input type="number" id="weight" placeholder="Enter your weight in kg">
+
+        <label for="heartRate">Heart Rate ﮩ٨ـﮩﮩ٨ـ♡ﮩ٨ـﮩﮩ٨ـ(bpm)</label>
+        <input type="number" id="heartRate" placeholder="Enter your average heart rate">
+
+        <label for="time">Time ⏱️(minutes)</label>
+        <input type="number" id="time" placeholder="Enter the duration of exercise in minutes">
+
+        <label for="gender">Gender 🚻</label>
+        <select id="gender">
+            <option value="male">Male 🧔🏻‍♂️</option>
+            <option value="female">Female 👩🏻</option>
+        </select>
+
+        <button onclick="calculateCalories()">Calculate Calories Burned</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateCalories() {
+            const age = parseFloat(document.getElementById('age').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const heartRate = parseFloat(document.getElementById('heartRate').value);
+            const time = parseFloat(document.getElementById('time').value);
+            const gender = document.getElementById('gender').value;
+
+            if (!age || !weight || !heartRate || !time) {
+                document.getElementById('result').innerHTML = "Please fill in all fields.";
+                return;
+            }
+
+            let caloriesBurned = 0;
+
+            if (gender === 'male') {
+                caloriesBurned = ((age * 0.2017) + (weight * 0.09036) + (heartRate * 0.6309) - 55.0969) * time / 4.184;
+            } else if (gender === 'female') {
+                caloriesBurned = ((age * 0.074) + (weight * 0.05741) + (heartRate * 0.4472) - 20.4022) * time / 4.184;
+            }
+
+            document.getElementById('result').innerHTML = `You burned approximately <strong>${caloriesBurned.toFixed(2)}</strong> calories.`;
+        }
+    </script>
+
+</body>
+</html>

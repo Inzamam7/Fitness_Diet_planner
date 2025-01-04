@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calories Burned Calculator</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(60, 34, 34);   
+            background-image: linear-gradient(to right, #000000, #611717, #bc0606); 
+            background-size: cover; 
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        #topmain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #291818;
+        }
+
+        #logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        nav {
+            display: flex;
+            flex-grow: 1;
+            margin-left: 110px;
+        }
+
+        nav a {
+            position: relative;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 5px 15px;
+            font-size: 18px;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ffffff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease-in-out;
+        }
+
+        nav a:hover::after {
+            left: 30%;
+            width: 40%;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            font-family: Cambria, serif;
+            font-size: large;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            margin-top: 80px; /* Adjust this value to create space below the fixed header */
+            margin-left: 30%;
+        }
+
+        h2 {
+            color: #800000;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #8d4a4a;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div id="topmain">
+        <div id="logo">
+            <img src="logofit.png" alt="Fit-Track Logo">
+        </div>
+        <nav>
+            <a href="home.php">Home</a>
+            <a href="plan.html">Planner</a>
+            <a href="calci.html">Calculators</a>
+            <a href="profile.php">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h2>Calories Burned Calculator By Exercise</h2>
+        
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter your weight" required>
+        
+        <label for="duration">Duration (minutes):</label>
+        <input type="number" id="duration" placeholder="Enter duration in minutes" required>
+        
+        <label for="exercise">Type of Exercise:</label>
+        <select id="exercise">
+            <option value="0">--Select type of Exercise</option>
+            <option value="3.5">Walking (3.5 MET)</option>
+            <option value="7.0">Running (7.0 MET)</option>
+            <option value="6.0">Cycling (6.0 MET)</option>
+            <option value="8.0">Swimming (8.0 MET)</option>
+            <option value="4.0">Yoga (4.0 MET)</option>
+            <option value="5.5">Strength Training (5.5 MET)</option>
+            <option value="5.0">Elliptical Trainer (5.0 MET)</option>
+            <option value="6.5">Rowing Machine (6.5 MET)</option>
+            <option value="7.5">Jump Rope (7.5 MET)</option>
+            <option value="5.0">Leg Press (5.0 MET)</option>
+            <option value="4.5">Back Exercise (4.5 MET)</option>
+            <option value="4.0">Shoulder Exercise (4.0 MET)</option>
+            <option value="6.0">Full Body Workout (6.0 MET)</option>
+        </select>
+        
+        <button onclick="calculateCalories()">Calculate</button>
+        
+        <h3 id="result">Calories Burned: 0</h3>
+    </div>
+
+    <script>
+        function calculateCalories() {
+            var weight = document.getElementById('weight').value;
+            var duration = document.getElementById('duration').value;
+            var exercise = document.getElementById('exercise').value;
+
+            // Convert duration to hours (since MET uses hours)
+            var durationInHours = duration / 60;
+
+            // Calculate calories burned
+            var caloriesBurned = exercise * weight * durationInHours;
+
+            // Display result
+            document.getElementById('result').innerText = 'Calories Burned: ' + caloriesBurned.toFixed(2);
+        }
+    </script>
+</body>
+</html>

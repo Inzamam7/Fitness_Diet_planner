@@ -1,0 +1,254 @@
+<!-- b<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-image: ;
+        }
+    </style>
+</head>
+<body>
+   <h1> <a href="cb.html">Calori</a> <br>
+    <a href="cbohr.html">Calori count by heart rate</a> <br>
+    <a href="bfi.html">body fat count</a> <br>
+    </h1>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculators</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(60, 34, 34);   
+            background-image: linear-gradient(to right, #000000, #611717, #bc0606); 
+            background-size: cover; 
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        #topmain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #291818;
+        }
+        #logo img {
+            height: 60px;
+            width: auto;
+        }
+        nav {
+            display: flex;
+            flex-grow: 1;
+            margin-left: 110px;
+        }
+        nav a {
+            position: relative;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 5px 15px;
+            font-size: 18px;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ffffff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease-in-out;
+        }
+        nav a:hover::after {
+            left: 30%;
+            width: 40%;
+        }
+
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 40px;
+            color: #f9f9f7; /* Bright color for visibility */
+            box-shadow: rgb(223, 186, 186);
+            text-align: center;
+        }
+
+        .tool-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .tool-section img {
+            width: 600px;
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            cursor: pointer; /* Add cursor pointer to show it is clickable */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid #ffde00; /* Border around images */
+        }
+
+        .tool-section img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        .description {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+       .tool-section a {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        a:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        hr {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 50px 0;
+        }
+
+        /* Lightbox Styles */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 5px solid #ffde00; /* Border around lightbox images */
+        }
+
+        #lightbox:target {
+            display: flex;
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .description {
+                font-size: 1em;
+            }
+
+            .tool-section img {
+                width: 90%;
+            }
+
+            a {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="topmain">
+        <div id="logo">
+            <img src="logofit.png" alt="Fit-Track Logo">
+        </div>
+        <nav>
+            <a href="home.php">Home</a>
+            <a href="plan.html">Planner</a>
+            <a href="calci.html">Calculators</a>
+            <a href="profile.php">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+    </div>
+    <hr>
+    <h1>Body & Diet Calculators </h1><hr>
+
+    <!-- Lightbox Structure -->
+    <div id="lightbox">
+        <img src="" id="lightbox-img" alt="Zoomed Image">
+    </div>
+      
+    <div class="tool-section">
+        <img src="body-mass-index-img-chart.jpg" alt="BMI Calculator chart" onclick="showImage(this)" />
+        <div class="description">Determine your Body Mass Index (BMI) 📏 to assess your weight category.</div>
+        <a href="bmi.html">Calculate Body Mass Index 📊</a>
+    </div>
+<hr>
+    <div class="tool-section">
+       
+        <img src="body-fat-percentage-.png" alt="Body Fat Index Calculator Icon" onclick="showImage(this)" />
+        <div class="description"><br>Calculate your Body Fat Index (BFI) 🏋‍♂ to assess your body composition and overall health.</div>
+        <a href="bfi.html">Calculate Body Fat Index 🔢</a>
+    </div>
+    
+    <hr>
+    
+    <!-- <div class="tool-section">
+        <img src="body-mass-index-img-chart.jpg" alt="BMI Calculator chart" onclick="showImage(this)" />
+        <div class="description">Determine your Body Mass Index (BMI) 📏 to assess your weight category.</div>
+        <a href="bmi.html">Calculate Body Mass Index 📊</a>
+    </div> -->
+    
+    <hr>
+    
+    <div class="tool-section">
+        <img src="heart-rate-calories.jpg" alt="Heart Rate Caloric Calculator Icon" onclick="showImage(this)" />
+        <div class="description">Estimate calories burned during exercise based on heart rate 🏃‍♂💪.</div>
+        <a href="cbohr.html">Calculate Calories by Heart Rate ❤❤</a>
+    </div>
+
+    <hr>
+    
+    <div class="tool-section">
+        <img src="c-b-e.jpg" alt="Caloric Calculator Icon" onclick="showImage(this)" />
+        <div class="description">Calculate daily caloric needs based on activity level 🍽.</div>
+        <a href="cb.html">Calculate Calories Burned By Exercise💪</a>
+    </div>
+
+    <script>
+        // Function to open the image in fullscreen (lightbox)
+        function showImage(element) {
+            var lightbox = document.getElementById('lightbox');
+            var lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = element.src; // Set the clicked image source to the lightbox image
+            lightbox.style.display = 'flex'; // Show the lightbox
+        }
+
+        // Close the lightbox when clicked
+        document.getElementById('lightbox').addEventListener('click', function() {
+            this.style.display = 'none'; // Hide the lightbox
+        });
+    </script>
+</body>
+</html>
