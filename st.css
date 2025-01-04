@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+        body {
+            background-image: url('bg.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            border : 2px solid white;
+            background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+            text-align: center;
+            color: white; /* Make text white for better contrast */
+        }
+        .container h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        .container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .container form input[type="text"],
+        .container form input[type="email"],
+        .container form input[type="password"],
+        .container form input[type="tel"],
+        .container form input[type="number"] {
+            border: none;
+            border-bottom: 2px solid white;
+            margin-bottom: 20px;
+            padding: 10px;
+            font-size: 16px;
+            outline: none;
+            background: transparent; /* Transparent background for inputs */
+            color: white; /* White text in inputs */
+        }
+        .container form .gender-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 10px 0;
+        }
+        .container form .gender-container label {
+            margin-right: 10px;
+            color: white; /* White label text */
+        }
+        .container form button {
+            background: linear-gradient(to right, #1b0702, #37100e);
+            border: none;
+            padding: 15px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 40px;
+        }
+        .container form button:hover {
+            background: linear-gradient(to right, #2e2725, #170605);
+        }
+#btn{
+    background: #910021 ;
+    border: none;
+    padding: 15px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+
+}

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalized Fitness Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: rgb(60, 34, 34);   
+            background-image: linear-gradient(to right, #000000, #611717, #bc0606); 
+            background-size: cover; 
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+        }
+        #topmain {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #291818;
+        }
+        #logo img {
+            height: 60px;
+            width: auto;
+        }
+        nav {
+            display: flex;
+            flex-grow: 1;
+            margin-left: 110px;
+        }
+        nav a {
+            position: relative;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 5px 15px;
+            font-size: 18px;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #ffffff;
+            left: 0;
+            bottom: 0;
+            transition: width 0.3s ease-in-out;
+        }
+        nav a:hover::after {
+            left: 30%;
+            width: 40%;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #800000;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #height-inputs label {
+            display: block;
+            margin-top: 10px;
+        }
+        #height-inputs input {
+            width: 100%; /* Make input full width */
+            margin-bottom: 10px; /* Add space between input fields */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-btn, .download-btn {
+            background-color: #800000;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-bottom: 20px;
+        }
+        .submit-btn:hover, .download-btn:hover {
+            background-color: #6c3434;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #eaeaea;
+            border-radius: 10px;
+            display: none;
+        }
+        .result p {
+            margin: 10px 0;
+        }
+        img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="topmain">
+        <div id="logo">
+            <img src="logofit.png" alt="Fit-Track Logo">
+        </div>
+        <nav>
+            <a href="home.php">Home</a>
+            <a href="plan.html">Planner</a>
+            <a href="calci.html">Calculators</a>
+            <a href="profile.php">Profile</a>
+            <a href="dashboard.html">Dashboard</a>
+        </nav>
+    </div>
+
+    <div class="container">
+        <h1>Personalized Fitness Planner</h1><hr>
+        <form id="fitness-form">
+            <label for="name"> Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="age">Age 🗓:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="height">Height 🧍↕:</label>
+            <div id="height-inputs">
+                <label for="height_cm">Height in CM:</label>
+                <input type="number" id="height_cm" placeholder="Height in cm" oninput="updateHeightFields()" required>
+
+                <label for="height_inch">Height in Inches:</label>
+                <input type="number" id="height_inch" placeholder="Height in inches" oninput="updateHeightFields()">
+
+                <label for="height_ft">Height in Feet:</label>
+                <input type="number" id="height_ft" placeholder="Height in feet" oninput="updateHeightFields()">
+            </div>
+
+            <label for="weight">Weight ⚖ (in kg):</label>
+            <input type="number" id="weight" name="weight" required>
+
+            <label for="gender">Gender 🚻:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male 🧔🏻‍♂️</option>
+                <option value="female">Female 👩🏻</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label id="pregnancyLabel" for="pregnancy" style="display:none;">Are you pregnant 🤰🏻?</label>
+            <select id="pregnancy" name="pregnancy" style="display:none;">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <label for="disability">Do you have a physical disability 👨🏼‍🦼?</label>
+            <select id="disability" name="disability">
+                <option value="none">None</option>
+                <option value="mobility">Mobility Issues</option>
+                <option value="visual">Visual Impairment</option>
+                <option value="hearing">Hearing Impairment</option>
+            </select>
+
+            <label for="medical">Any medical condition 🏥?</label>
+            <select id="medical" name="medical">
+                <option value="none">None</option>
+                <option value="diabetes">Diabetes</option>
+                <option value="heart_disease">Heart Disease</option>
+                <option value="hypertension">Hypertension</option>
+            </select>
+
+            <label for="diet_preference">Diet Preference 🥗:</label>
+            <select id="diet_preference" name="diet_preference">
+                <option value="SELECT">- SELECT -</option>
+                <option value="vegetarian">Vegetarian</option>
+                <option value="non_vegetarian">Non-Vegetarian</option>
+                <option value="vegan">Vegan</option>
+                <option value="mixed">Mixed</option>
+            </select>
+
+            <label for="plan_type">Plan Type 📅:</label>
+            <select id="plan_type" name="plan_type">
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+
+            <button type="button" class="submit-btn" onclick="generatePlan()">Generate Plan</button>
+        </form>
+
+        <div id="planOutput" class="result"></div>
+
+        <button id="download-btn" class="download-btn" style="display:none;" onclick="downloadPlan()">Download Plan</button>
+        <button type="button" class="submit-btn" onclick="savePlan()">Save My Plan</button>
+
+    </div>
+
+    <script>
+        // Show or hide pregnancy question based on age and gender
+        document.getElementById('age').addEventListener('input', updatePregnancyField);
+        document.getElementById('gender').addEventListener('change', updatePregnancyField);
+
+        function updatePregnancyField() {
+            const age = document.getElementById('age').value;
+            const gender = document.getElementById('gender').value;
+            const pregnancyLabel = document.getElementById('pregnancyLabel');
+            const pregnancySelect = document.getElementById('pregnancy');
+
+            if (gender === 'female' && age >= 12 && age <= 50) {
+                pregnancyLabel.style.display = 'block';
+                pregnancySelect.style.display = 'block';
+            } else {
+                pregnancyLabel.style.display = 'none';
+                pregnancySelect.style.display = 'none';
+            }
+        }
+
+        // Height conversion logic between cm, inches, and feet
+        function updateHeightFields() {
+            const cmInput = document.getElementById('height_cm');
+            const inchInput = document.getElementById('height_inch');
+            const ftInput = document.getElementById('height_ft');
+
+            const cm = parseFloat(cmInput.value);
+            const inches = parseFloat(inchInput.value);
+            const feet = parseFloat(ftInput.value);
+        
+
+            // If the cm input is valid and not empty
+           
+
+
+            if (!isNaN(cm)) {
+                // Convert cm to inches and feet
+                inchInput.value = (cm / 2.54).toFixed(2);
+                ftInput.value = (cm / 30.48).toFixed(2);
+            } else if (!isNaN(inches)) {
+                // Convert inches to cm and feet
+                cmInput.value = (inches * 2.54).toFixed(2);
+                ftInput.value = (inches / 12).toFixed(2);
+            } else if (!isNaN(feet)) {
+                 // Convert feet to cm and inches
+                 cmInput.value = (feet * 30.48).toFixed(2);
+                inchInput.value = (feet * 12).toFixed(2);
+            }
+        }
+
+
+        function generatePlan() {
+    const name = document.getElementById('name').value;
+    const age = document.getElementById('age').value;
+    const height_cm = document.getElementById('height_cm').value;
+    const weight = document.getElementById('weight').value;
+    const gender = document.getElementById('gender').value;
+    const pregnancy = document.getElementById('pregnancy').value;
+    const disability = document.getElementById('disability').value;
+    const medical = document.getElementById('medical').value;
+    const dietPreference = document.getElementById('diet_preference').value;
+    const planType = document.getElementById('plan_type').value;
+
+    // Basic BMI Calculation
+    const bmi = (weight / ((height_cm / 100) ** 2)).toFixed(2);
+
+    // BMI Review based on range
+    let bmiReview = '';
+    if (bmi < 18.5) {
+        bmiReview = 'You are underweight. A balanced diet and moderate strength training can help you gain healthy weight.';
+    } else if (bmi >= 18.5 && bmi < 24.9) {
+        bmiReview = 'You have a healthy weight. Continue maintaining your fitness through regular exercise and a balanced diet.';
+    } else if (bmi >= 25 && bmi < 29.9) {
+        bmiReview = 'You are overweight. Focus on a balanced diet and regular cardiovascular exercise to lose weight.';
+    } else {
+        bmiReview = 'You are in the obese range. It is important to follow a structured fitness plan and consult a professional for advice.';
+    }
+
+    // Workout and Diet Plan based on conditions
+    let workoutPlan = '';
+    let dietPlan = '';
+
+    if (planType === 'weekly') {
+        workoutPlan = getWeeklyWorkoutPlan(gender, disability, medical);
+        dietPlan = getDetailedDietPlan(dietPreference, 'weekly');
+    } else if (planType === 'monthly') {
+        workoutPlan = getMonthlyWorkoutPlan(gender, disability, medical, pregnancy);
+        dietPlan = getDetailedDietPlan(dietPreference, 'monthly');
+    }
+
+    // Display results
+    document.getElementById('planOutput').innerHTML = `
+        <h3>Hello, ${name}!</h3>
+        <p><strong>BMI:</strong> ${bmi}</p>
+        <p>${bmiReview}</p>
+        ${workoutPlan}
+        <h3>Diet Plan:</h3>
+        ${dietPlan}
+    `;
+    document.getElementById('planOutput').style.display = 'block';
+    document.getElementById('download-btn').style.display = 'block';
+}
+
+        function getWeeklyWorkoutPlan(gender, disability, medical) {
+    let workoutPlan = `
+        <h3>Weekly Workout Plan 🗓️</h3>
+        
+        <strong>Monday:</strong> 🏃‍♂️ Cardio and Core 💪<br>
+        <ul>
+            <li><strong>Cardio:</strong> 🚶‍♂️ 30 min jog or brisk walk, 🚴 20 min cycling</li>
+            <li><strong>Core Exercises:</strong> 
+                <ul>
+                    <li>🧘‍♂️ Plank - 3 sets of 30 seconds ⏱️</li>
+                    <li>🔄 Crunches - 3 sets of 15 reps 💪</li>
+                    <li>🚀 Leg Raises - 3 sets of 12 reps 🍑</li>
+                </ul>
+            </li>
+        </ul><br>
+
+        <strong>Tuesday:</strong> 💪 Strength Training (Upper Body) 🏋️‍♂️<br>
+        <ul>
+            <li><strong>Exercises:</strong>
+                <ul>
+                    <li>👐 Push-ups - 3 sets of 12 reps 💪</li>
+                    <li>🏋️‍♂️ Bench Press - 3 sets of 10 reps</li>
+                    <li>🔄 Dumbbell Rows - 3 sets of 12 reps 🏋️‍♀️</li>
+                    <li>🎯 Shoulder Press - 3 sets of 12 reps</li>
+                </ul>
+            </li>
+            <li><strong>Cool Down:</strong> 🧘‍♀️ Stretching - 10 minutes 🕒</li>
+        </ul><br>
+
+        <strong>Wednesday:</strong> 🧘‍♀️ Yoga and Flexibility 🤸‍♂️<br>
+        <ul>
+            <li><strong>Yoga Routine:</strong> 🧘‍♀️ 1 hour of gentle yoga, including poses like:
+                <ul>
+                    <li>🧘‍♂️ Downward Dog</li>
+                    <li>🪖 Warrior I & II</li>
+                    <li>👶 Child’s Pose</li>
+                </ul>
+            </li>
+            <li><strong>Flexibility Exercises:</strong>
+                <ul>
+                    <li>🦵 Hamstring Stretch - 2 sets of 30 seconds each leg</li>
+                    <li>🦵 Quadriceps Stretch - 2 sets of 30 seconds each leg</li>
+                    <li>👐 Shoulder Stretch - 2 sets of 30 seconds each arm</li>
+                </ul>
+            </li>
+        </ul><br>
+
+        <strong>Thursday:</strong> 🏋️‍♀️ Weight Training (Full Body) 💪<br>
+        <ul>
+            <li><strong>Exercises:</strong>
+                <ul>
+                    <li>🍑 Squats - 3 sets of 15 reps</li>
+                    <li>🏋️‍♂️ Deadlifts - 3 sets of 12 reps</li>
+                    <li>💪 Chest Press - 3 sets of 12 reps</li>
+                    <li>🧗 Lat Pulldowns - 3 sets of 12 reps</li>
+                    <li>🏋️‍♀️ Leg Press - 3 sets of 15 reps</li>
+                </ul>
+            </li>
+            <li><strong>Cool Down:</strong> 🧘‍♀️ Stretching - 10 minutes 🕒</li>
+        </ul><br>
+
+        <strong>Friday:</strong> 🏊‍♂️ Swimming and Cardio 🏅<br>
+        <ul>
+            <li><strong>Swimming Routine:</strong> 🌊 45 minutes of laps, including:
+                <ul>
+                    <li>🏊 Freestyle</li>
+                    <li>🌊 Backstroke</li>
+                    <li>🦢 Breaststroke</li>
+                </ul>
+            </li>
+            <li><strong>Additional Cardio:</strong>
+                <ul>
+                    <li>⚡ 15 min of interval training (alternating fast and slow swimming)</li>
+                </ul>
+            </li>
+        </ul><br>
+
+        <strong>Saturday:</strong> 🚶‍♀️ Light Activity and Mobility 🧑‍🦽<br>
+        <ul>
+            <li><strong>Activity:</strong> 🚶‍♀️ 30 minutes of brisk walking or light jogging</li>
+            <li><strong>Mobility Exercises:</strong>
+                <ul>
+                    <li>🔄 Hip Circles - 2 sets of 15 reps each side</li>
+                    <li>🔁 Shoulder Rolls - 2 sets of 15 reps each direction</li>
+                    <li>🔄 Ankle Rotations - 2 sets of 15 reps each foot</li>
+                </ul>
+            </li>
+        </ul><br>
+
+        <strong>Sunday:</strong> Rest Day 🛌🌿<br>
+        <ul>
+<li><strong>Rest and Recovery:</strong> 🛌 Take it easy and recharge for the week ahead. Focus on hydration 💧 to stay well-hydrated and consider light stretching 🧘‍♂️ to maintain flexibility. You might also enjoy a relaxing bath 🛁 or a gentle walk 🚶‍♀️ to aid in muscle recovery. Remember to prioritize quality sleep 💤 for optimal recovery.</li>
+        </ul>
+    `;
+
+    // Customize based on disability and medical conditions
+    if (disability === 'mobility') {
+        workoutPlan = workoutPlan.replace('🏃‍♂️ Cardio', '🧑‍🦽 Low-Impact Cardio (e.g., seated cycling, swimming) 🧑‍🦽');
+        workoutPlan = workoutPlan.replace('Squats - 3 sets of 15 reps', 'Chair Squats - 3 sets of 15 reps 🪑');
+        workoutPlan = workoutPlan.replace('Deadlifts - 3 sets of 12 reps', 'Modified Deadlifts - 3 sets of 12 reps ⚖️');
+    }
+
+    if (medical === 'diabetes') {
+        workoutPlan += `
+            <p><strong>Note:</strong> For diabetes management, 🩺 monitor blood sugar levels before and after exercise. Opt for moderate-intensity workouts and avoid sudden spikes or drops in exercise intensity. Example activities include steady-state walking 🚶‍♂️ and moderate swimming 🏊‍♀️.</p>
+        `;
+    }
+
+    return workoutPlan;
+}
+
+
+function getMonthlyWorkoutPlan(gender, disability, medical, pregnancy) {
+    let workoutPlan = `
+        <h3>Monthly Workout Plan</h3>
+        
+        <strong>Week 1:</strong> 🏃‍♂️ Cardio and Strength Training<br>
+        <ul>
+            <li><strong>Monday:</strong> 🏃 Cardio - 30 min jog or brisk walk 🚶‍♂️, 🚴 20 min cycling 🚴‍♂️</li>
+            <li><strong>Tuesday:</strong> 💪 Strength Training - Full Body
+                <ul>
+                    <li>Push-ups - 3 sets of 12 reps 💪</li>
+                    <li>Squats - 3 sets of 15 reps 🍑</li>
+                    <li>Dumbbell Rows - 3 sets of 12 reps 🏋️‍♂️</li>
+                    <li>Plank - 3 sets of 30 seconds ⏱️</li>
+                </ul>
+            </li>
+            <li><strong>Wednesday:</strong> 🏃 Cardio - 45 min of interval running 🏃‍♂️</li>
+            <li><strong>Thursday:</strong> 🏋️‍♀️ Strength Training - Upper Body
+                <ul>
+                    <li>Bench Press - 3 sets of 10 reps 🏋️‍♂️</li>
+                    <li>Shoulder Press - 3 sets of 12 reps 🏋️‍♀️</li>
+                    <li>Bicep Curls - 3 sets of 15 reps 💪</li>
+                    <li>Tricep Dips - 3 sets of 12 reps 🏋️‍♂️</li>
+                </ul>
+            </li>
+            <li><strong>Friday:</strong> 🚣‍♂️ Cardio - 30 min of rowing machine 🚣</li>
+            <li><strong>Saturday:</strong> 💪 Strength Training - Lower Body
+                <ul>
+                    <li>Deadlifts - 3 sets of 12 reps 🏋️‍♂️</li>
+                    <li>Leg Press - 3 sets of 15 reps 🦵</li>
+                    <li>Lunges - 3 sets of 12 reps per leg 🏃‍♀️</li>
+                    <li>Calf Raises - 3 sets of 20 reps 🦶</li>
+                </ul>
+            </li>
+            <li><strong>Sunday:</strong> Rest Day 🛌</li>
+        </ul><br>
+
+        <strong>Week 2:</strong> 🧘‍♀️ Yoga and Flexibility<br>
+        <ul>
+            <li><strong>Monday:</strong> 🧘‍♀️ Yoga - 1 hour (focus on balance and strength poses) 🧘</li>
+            <li><strong>Tuesday:</strong> 🤸‍♂️ Stretching - 30 min (full-body stretching routine) 🧘‍♂️</li>
+            <li><strong>Wednesday:</strong> 🧘‍♀️ Yoga - 1 hour (focus on relaxation and breathing) 🌬️</li>
+            <li><strong>Thursday:</strong> 🤸‍♀️ Stretching - 30 min (emphasis on hamstrings, quads, and back) 🧘‍♂️</li>
+            <li><strong>Friday:</strong> 🧘‍♀️ Yoga - 1 hour (focus on flexibility and core strength) 💪</li>
+            <li><strong>Saturday:</strong> 🤸‍♂️ Stretching - 30 min (dynamic stretching exercises) 🧘‍♀️</li>
+            <li><strong>Sunday:</strong> Rest Day 🛌</li>
+        </ul><br>
+
+        <strong>Week 3:</strong> 🏋️‍♀️ Weight Training<br>
+        <ul>
+            <li><strong>Monday:</strong> Full-Body Workout
+                <ul>
+                    <li>Squats - 4 sets of 12 reps 🍑</li>
+                    <li>Chest Press - 4 sets of 10 reps 🏋️‍♂️</li>
+                    <li>Lat Pulldowns - 4 sets of 12 reps 💪</li>
+                    <li>Leg Curls - 4 sets of 15 reps 🦵</li>
+                </ul>
+            </li>
+            <li><strong>Tuesday:</strong> Core Exercises
+                <ul>
+                    <li>Russian Twists - 3 sets of 20 reps 🇷🇺</li>
+                    <li>Bicycle Crunches - 3 sets of 15 reps 🚲</li>
+                    <li>Mountain Climbers - 3 sets of 30 seconds ⛰️</li>
+                    <li>Flutter Kicks - 3 sets of 30 seconds 🦋</li>
+                </ul>
+            </li>
+            <li><strong>Wednesday:</strong> Full-Body Workout
+                <ul>
+                    <li>Deadlifts - 4 sets of 12 reps 🏋️‍♂️</li>
+                    <li>Overhead Press - 4 sets of 10 reps 🏋️‍♀️</li>
+                    <li>Dumbbell Rows - 4 sets of 12 reps 💪</li>
+                    <li>Calf Raises - 4 sets of 20 reps 🦶</li>
+                </ul>
+            </li>
+            <li><strong>Thursday:</strong> Core Exercises
+                <ul>
+                    <li>Plank - 3 sets of 45 seconds ⏱️</li>
+                    <li>V-Ups - 3 sets of 15 reps 🇻🇳</li>
+                    <li>Side Plank - 3 sets of 30 seconds each side 🌟</li>
+                    <li>Toe Touches - 3 sets of 20 reps 👣</li>
+                </ul>
+            </li>
+            <li><strong>Friday:</strong> Full-Body Workout
+                <ul>
+                    <li>Lunges - 4 sets of 12 reps per leg 🏃‍♀️</li>
+                    <li>Incline Bench Press - 4 sets of 10 reps 🏋️‍♂️</li>
+                    <li>Seated Rows - 4 sets of 12 reps 💪</li>
+                    <li>Leg Extensions - 4 sets of 15 reps 🦵</li>
+                </ul>
+            </li>
+            <li><strong>Saturday:</strong> Core Exercises
+                <ul>
+                    <li>Hanging Leg Raises - 3 sets of 12 reps 🏋️‍♂️</li>
+                    <li>Reverse Crunches - 3 sets of 15 reps 🔄</li>
+                    <li>Plank with Shoulder Tap - 3 sets of 20 taps 👋</li>
+                    <li>Ab Wheel Rollouts - 3 sets of 12 reps 🎡</li>
+                </ul>
+            </li>
+            <li><strong>Sunday:</strong> Rest Day 🛌</li>
+        </ul><br>
+
+        <strong>Week 4:</strong> 🚴‍♂️ Endurance Training<br>
+        <ul>
+            <li><strong>Monday:</strong> 🚴 Cycling - 1 hour of moderate intensity 🚴‍♂️</li>
+            <li><strong>Tuesday:</strong> 🏊 Swimming - 1 hour of laps (freestyle, backstroke, breaststroke) 🌊</li>
+            <li><strong>Wednesday:</strong> 🚴 Cycling - 1 hour, including interval training (short bursts of high intensity) ⚡</li>
+            <li><strong>Thursday:</strong> 🏊 Swimming - 1 hour with focus on technique and endurance 🏊‍♀️</li>
+            <li><strong>Friday:</strong> 🚴 Cycling - 1 hour of steady-state endurance 🚴‍♀️</li>
+            <li><strong>Saturday:</strong> 🏊 Swimming - 1 hour with intervals (alternating fast and slow) 🏊‍♂️</li>
+<li><strong>Rest and Recovery:</strong> 🛌 Take it easy and recharge for the week ahead. Focus on hydration 💧 to stay well-hydrated and consider light stretching 🧘‍♂️ to maintain flexibility. You might also enjoy a relaxing bath 🛁 or a gentle walk 🚶‍♀️ to aid in muscle recovery. Remember to prioritize quality sleep 💤 for optimal recovery.</li>
+        </ul>
+    `;
+
+    // Customize based on pregnancy, disability, and medical conditions
+    if (pregnancy === 'yes') {
+        workoutPlan += `
+            <p><strong>Note:</strong> 🤰 Focus on low-impact exercises and avoid exercises that involve lying on your back after the first trimester. Always consult your doctor before starting any new routine. Examples: Swimming 🏊, Prenatal Yoga 🧘‍♀️</p>
+        `;
+    }
+
+    if (disability === 'visual') {
+        workoutPlan += `
+            <p><strong>Note:</strong> 👁️ Ensure exercises are adapted for safety and accessibility. Use guided or assisted exercises where needed, and ensure all equipment is clearly marked and easy to use. Consider using tactile markers and verbal instructions.</p>
+        `;
+    }
+
+    if (medical === 'heart_disease') {
+        workoutPlan += `
+            <p><strong>Note:</strong> ❤️ Keep workouts moderate and focus on consistent, steady exercise. Avoid high-intensity workouts and consult with your physician before making any changes to your exercise routine. Opt for activities like walking 🚶‍♂️ and swimming 🏊.</p>
+        `;
+    }
+
+    return workoutPlan;
+}
+
+function getDetailedDietPlan(dietPreference, planType) {
+    let dietPlan = '';
+
+    if (planType === 'weekly') {
+        dietPlan += `
+            <h3>Weekly Diet Plan</h3>
+            <strong>Monday:</strong><br>
+            <strong>Breakfast:</strong> 🥑 Avocado Toast with Whole Grain Bread - Rich in healthy fats and fiber (1 slice)<br>
+            <strong>Lunch:</strong>  🥗 Cucumber Salad with Mixed Greens - High in protein and vitamins (2-3 cucumber, 2 cups mixed greens)<br>
+            <strong>Dinner:</strong> 🥘 Vegetable Stir-Fry with Brown Rice - Packed with fiber and minerals (1 cup stir-fry, 1/2 cup brown rice)<br>
+            <strong>Snacks:</strong> 🍎 Apple Slices with Almond Butter - Great for energy and healthy fats (1 apple, 2 tbsp almond butter)<br><br>
+
+            <strong>Tuesday:</strong><br>
+            <strong>Breakfast:</strong> 🍳 Scrambled Eggs with Spinach and Tomatoes - Protein and antioxidants (2 eggs, 1 cup spinach, 1 tomato)<br>
+            <strong>Lunch:</strong> 🥪 Turkey and Avocado Wrap with a Side Salad - Lean protein and healthy fats (1 wrap, 1 cup salad)<br>
+            <strong>Dinner:</strong> 🍲 Lentil Soup with a Whole Grain Roll - High in protein and fiber (1 bowl soup, 1 roll)<br>
+            <strong>Snacks:</strong> 🥕 Carrot Sticks with Hummus - Good source of vitamins and protein (1 cup carrot sticks, 1/4 cup hummus)<br><br>
+
+            <strong>Wednesday:</strong><br>
+            <strong>Breakfast:</strong> 🍓 Greek Yogurt with Berries and Nuts - High in protein and antioxidants (1 cup yogurt, 1/2 cup berries, 1/4 cup nuts)<br>
+            <strong>Lunch:</strong> 🥗 Quinoa Salad with Chickpeas and Feta Cheese - Protein and fiber-rich (1 cup salad)<br>
+            <strong>Dinner:</strong> 🥩 Baked Salmon with Steamed Broccoli and Quinoa - Rich in omega-3s and fiber (150g salmon, 1 cup broccoli, 1/2 cup quinoa)<br>
+            <strong>Snacks:</strong> 🍌 Banana with a Handful of Walnuts - Potassium and healthy fats (1 banana, 1/4 cup walnuts)<br><br>
+
+            <strong>Thursday:</strong><br>
+            <strong>Breakfast:</strong> 🌾 Oatmeal with Fresh Fruit and a Sprinkle of Chia Seeds - High in fiber and omega-3s (1 cup oatmeal, 1/2 cup fruit, 1 tbsp chia seeds)<br>
+            <strong>Lunch:</strong> 🥙 Mediterranean Chicken Bowl with Hummus and Pita - Balanced protein and fiber (1 bowl)<br>
+            <strong>Dinner:</strong> 🍝 Whole Wheat Pasta with Tomato Basil Sauce and Grilled Veggies - Good source of fiber and vitamins (1 cup pasta, 1/2 cup sauce, 1 cup veggies)<br>
+            <strong>Snacks:</strong> 🥒 Cucumber Slices with Greek Yogurt Dip - Hydrating and protein-rich (1 cup cucumber, 1/4 cup dip)<br><br>
+
+            <strong>Friday:</strong><br>
+            <strong>Breakfast:</strong> 🥣 Smoothie Bowl with Spinach, Banana, and Almond Milk - Nutritious and energizing (1 bowl)<br>
+            <strong>Lunch:</strong> 🥗 Spinach and Feta Stuffed Chicken Breast with Sweet Potato Fries - Protein and fiber-rich (1 chicken breast, 1 cup fries)<br>
+            <strong>Dinner:</strong> 🍛 Curry Lentils with Cauliflower Rice - High in protein and low in carbs (1 cup curry, 1/2 cup rice)<br>
+            <strong>Snacks:</strong> 🍉 Watermelon Cubes - Hydrating and low-calorie (1 cup)<br><br>
+
+            <strong>Saturday:</strong><br>
+            <strong>Breakfast:</strong> 🥑 Whole Grain Toast with Tomato and Basil - High in fiber and antioxidants (1 slice)<br>
+            <strong>Lunch:</strong> 🥩 Beef Stir-Fry with Bell Peppers and Brown Rice - Rich in protein and vitamins (1 cup stir-fry, 1/2 cup rice)<br>
+            <strong>Dinner:</strong> 🍲 Chicken and Vegetable Soup - Low in calories and high in nutrients (1 bowl)<br>
+            <strong>Snacks:</strong> 🥥 Coconut Yogurt with Mixed Berries - Protein and antioxidant-rich (1/2 cup yogurt, 1/2 cup berries)<br><br>
+
+            <strong>Sunday:</strong><br>
+            <strong>Breakfast:</strong> 🥒 Veggie Omelette with Mushrooms and Bell Peppers - High in protein and vitamins (2 eggs, 1/2 cup mushrooms, 1/2 cup peppers)<br>
+            <strong>Lunch:</strong> 🥗 Mixed Bean Salad with Avocado and Lime Dressing - High in protein and healthy fats (1 cup salad)<br>
+            <strong>Dinner:</strong> 🍣 Sushi Rolls with Fresh Vegetables - Balanced and light (6 rolls)<br>
+            <strong>Snacks:</strong> 🥥 Almonds and Dried Fruit - Protein and fiber-rich (1/4 cup almonds, 1/4 cup dried fruit)<br>
+        `;
+    } else if (planType === 'monthly') {
+        dietPlan += `
+            <h3>Monthly Diet Plan</h3>
+            <strong>Week 1:</strong><br>
+            <strong>Breakfast:</strong> 🍳 Egg Muffins with Spinach and Cheese - Protein and iron (2 muffins)<br>
+            <strong>Lunch:</strong>  🥗Salad - High in protein and calcium (1 bowl)<br>
+            <strong>Dinner:</strong> 🍲 Sweet Potato and Black Bean Chili - High in fiber and vitamins (1 bowl)<br>
+            <strong>Snacks:</strong> 🥒 Sliced Veggies with Greek Yogurt Dip - Nutritious and filling (1 cup veggies, 1/4 cup dip)<br><br>
+
+            <strong>Week 2:</strong><br>
+            <strong>Breakfast:</strong> 🌾 Overnight Oats with Almonds and Blueberries - High in fiber and antioxidants (1 cup)<br>
+            <strong>Lunch:</strong> 🥙 Grilled Vegetable Wrap with a Side of Fruit - Balanced and filling (1 wrap, 1 piece fruit)<br>
+            <strong>Dinner:</strong> 🥩 Grilled Steak with Roasted Vegetables - Rich in protein and vitamins (1 steak, 1 cup veggies)<br>
+            <strong>Snacks:</strong> 🍏 Apple Slices with Peanut Butter - Good source of energy and protein (1 apple, 2 tbsp peanut butter)<br><br>
+
+            <strong>Week 3:</strong><br>
+            <strong>Breakfast:</strong> 🍓 Smoothie with Spinach, Berries, and Protein Powder - High in nutrients and protein (1 smoothie)<br>
+            <strong>Lunch:</strong> 🥗 Quinoa Salad with Roasted Chickpeas - Protein and fiber-rich (1 bowl)<br>
+            <strong>Dinner:</strong> 🍛 Thai Curry with Tofu and Mixed Vegetables - Rich in protein and antioxidants (1 cup curry, 1/2 cup rice)<br>
+            <strong>Snacks:</strong> 🍉 Watermelon and Feta Salad - Hydrating and flavorful (1 cup)<br><br>
+
+            <strong>Week 4:</strong><br>
+            <strong>Breakfast:</strong> 🥑 Avocado Smoothie with Banana - High in healthy fats and potassium (1 smoothie)<br>
+            <strong>Lunch:</strong> 🥗 Mediterranean Lentil Salad - Rich in protein and fiber (1 bowl)<br>
+            <strong>Dinner:</strong> 🍲 Baked Chicken with Sweet Potatoes and Asparagus - Protein and nutrient-rich (1 chicken breast, 1 cup sweet potatoes, 1 cup asparagus)<br>
+            <strong>Snacks:</strong> 🥕 Carrot Sticks with Hummus - High in vitamins and protein (1 cup carrot sticks, 1/4 cup hummus)<br>
+        `;
+    }
+
+    // Customize based on diet preference
+    if (dietPreference === 'vegan') {
+    // Replace animal product emojis with avocado and replace certain food items with vegan alternatives
+    dietPlan = dietPlan.replace(/🥚|🍳|🍗|🥩/g, '🥑'); 
+    dietPlan = dietPlan.replace(/\b(cheese|Greek Yogurt|egg|meat|milk|hummus|chicken|salmon|fish)\b/g, 'tofu or tempeh');
+    dietPlan += '<p><strong>Note:</strong> Ensure adequate protein intake with plant-based sources like tofu, tempeh, legumes, and nuts. Use fortified plant milks if needed.</p>';
+} else if (dietPreference === 'vegetarian') {
+    // Replace non-vegetarian food items with vegetarian options
+    dietPlan = dietPlan.replace(/\b(🍗|🥩|fish|chicken|egg)\b/g, 'tofu or beans');
+    dietPlan += '<p><strong>Note:</strong> Include dairy products for protein and calcium, or use fortified plant-based alternatives if desired.</p>';
+} else if (dietPreference === 'non_vegetarian') {
+    // Replace vegetarian substitutes with non-vegetarian items
+    dietPlan = dietPlan.replace(/\b(tofu|tempeh)\b/g, 'chicken or fish');
+    dietPlan += '<p><strong>Note:</strong> Balance your meals with lean proteins, whole grains, and plenty of vegetables.</p>';
+}
+
+return dietPlan;
+}
+
+
+function downloadPlan(event) {
+    if (event) event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const weight = document.getElementById('weight').value;
+    const height = document.getElementById('height_cm').value;  // Change this based on your form structure
+    const bmi = (weight / ((height / 100) ** 2)).toFixed(2);  // Adjusted to use height_cm
+    const planOutput = document.getElementById('planOutput').innerText;
+
+    // Check if the required fields are filled
+    if (!name || !weight || !height || !planOutput) {
+        alert("Please generate a plan before downloading.");
+        return;
+    }
+
+    const blob = new Blob([`Fitness Plan for ${name}\n\nBMI: ${bmi}\n\n${planOutput}`], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fitness_plan.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+        
+
+
+        // save my plan 
+        function savePlan() {
+    const name = document.getElementById('name').value.trim();
+    const age = document.getElementById('age').value.trim();
+    const height = document.getElementById('height_cm').value.trim();  // Use height in cm
+    const weight = document.getElementById('weight').value.trim();
+    const gender = document.getElementById('gender').value;
+    const disability = document.getElementById('disability').value.trim();
+    const medical = document.getElementById('medical').value.trim();
+    const dietPreference = document.getElementById('diet_preference').value;
+    const planType = document.getElementById('plan_type').value;
+
+    if (!name || !age || !height || !weight || !gender || !dietPreference || !planType) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+
+    let workoutPlan = planType === 'weekly' ? getWeeklyWorkoutPlan(gender, disability, medical) : getMonthlyWorkoutPlan(gender, disability, medical);
+    let dietPlan = getDetailedDietPlan(dietPreference, planType);
+
+    const planData = {
+        name,
+        age,
+        height,
+        weight,
+        gender,
+        disability,
+        medical,
+        dietPreference,
+        planType,
+        workoutPlan,
+        dietPlan
+    };
+
+    // Save plan data to local storage
+    localStorage.setItem('fitnessPlan', JSON.stringify(planData));
+
+    alert("Plan saved successfully!");
+}
+
+
+    </script>
+
+</body>
+</html>
+
+
